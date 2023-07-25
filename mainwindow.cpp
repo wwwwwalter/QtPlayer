@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+#include <QICon>
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPalette>
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //main widget
+    setWindowIcon(QIcon(":/images/logo2.png"));
     stackedWidget = new QStackedWidget;
     videoWidget = new QVideoWidget;
     labelMask = new QLabel;

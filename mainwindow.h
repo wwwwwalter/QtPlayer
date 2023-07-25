@@ -8,6 +8,8 @@
 #include <QLabel>
 #include <QAudioOutput>
 #include <QMediaPlayer>
+#include <QMenu>
+#include <QAction>
 #include "videowidget.h"
 
 class MainWindow : public QMainWindow
@@ -27,6 +29,22 @@ private:
     QLabel *labelMask;
     QPalette *palette;
 
+
+    //menu
+    QMenu *fileMenu;
+    QMenu *viewMenu;
+    QMenu *toolMenu;
+    QMenu *helpMenu;
+    QMenu *changeStyleMenu;
+
+    //action
+    QAction *aboutAction;
+    QAction *aboutQtAction;
+
+
+
+
+
     //dock widget
     QDockWidget *leftDockWidget;
     QDockWidget *bottomDockWidget;
@@ -43,9 +61,13 @@ private:
     QVideoWidget *videoWidget;
     QAudioOutput *audioOutput;
 
+    //action slots
+public slots:
+    void UpdateStyleWindowsVista();
+    void UpdateStyleWindows();
+    void UpdateStyleFusion();
 
 
-    // QWidget interface
 protected:
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
 };

@@ -10,7 +10,7 @@
 #include <QMediaPlayer>
 #include <QMenu>
 #include <QAction>
-#include "videowidget.h"
+#include "mediawidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -24,8 +24,9 @@ public:
 
 private:
     //main widget
-    QStackedWidget *stackedWidget;
-    //QVideoWidget *videoWidget;
+    QWidget *centralWidget;
+    QList<MediaWidget*> *listMediaWidget;
+
     QLabel *labelMask;
     QPalette *palette;
 
@@ -51,15 +52,7 @@ private:
     QDockWidget *rightDockWidget;
 
 
-    //media
-    QMediaPlayer *player;
 
-    //intput
-
-
-    //output
-    QVideoWidget *videoWidget;
-    QAudioOutput *audioOutput;
 
     //action slots
 public slots:
@@ -68,7 +61,6 @@ public slots:
     void UpdateStyleFusion();
 
 
-protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+
 };
 #endif // MAINWINDOW_H

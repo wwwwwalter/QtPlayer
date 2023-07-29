@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+
 #include <QICon>
 #include <QLabel>
 #include <QMouseEvent>
@@ -17,12 +18,10 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    //media
-    player = new QMediaPlayer(this);
 
-
-    //main widget
+    //mainwindow
     setWindowIcon(QIcon(":/images/logo2.png"));
+    QApplication::setStyle(QStyleFactory::create("fusion"));
 
     //menu bar
     //File
@@ -74,13 +73,33 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    //central widget
+    centralWidget = new QWidget;
+    setCentralWidget(centralWidget);
+    listMediaWidget = new QList<MediaWidget*>;
+    QGridLayout *gridlayout = new QGridLayout;
+    gridlayout->setSpacing(1);
+
+    centralWidget->setLayout(gridlayout);
+
+
+    for (int i = 0; i < 3; ++i) {
+        gridlayout->setRowMinimumHeight(i,150);
+        for (int j = 0; j < 3; ++j) {
+            gridlayout->setColumnMinimumWidth(j,200);
+            MediaWidget *mediaWidget = new MediaWidget;
+            listMediaWidget->append(mediaWidget);
+            gridlayout->addWidget(mediaWidget,i,j);
+        }
+    }
+
+
+
 
 
 
 
     //widget
-    stackedWidget = new QStackedWidget;
-    videoWidget = new QVideoWidget;
     labelMask = new QLabel;
     labelMask->setText(tr("Video"));
     labelMask->setFont(QFont("微软雅黑",20,0,false));
@@ -101,22 +120,17 @@ MainWindow::MainWindow(QWidget *parent)
     labelMask->setLayout(vboxlayout_lablemask);
 
 
-    stackedWidget->insertWidget(0,labelMask);
-    stackedWidget->insertWidget(1,videoWidget);
-    stackedWidget->setMinimumSize(400,300);
-    setCentralWidget(stackedWidget);
+
+
 
 
 
     //output
-    audioOutput = new QAudioOutput;
-    player->setAudioOutput(audioOutput);
-    player->setVideoOutput(videoWidget);
-    player->setSource(QUrl::fromLocalFile("C:\\Users\\gzyit\\Videos\\taylor\\All Too Well.mp4"));
+
+
 
     //control
-    //player->play();
-    stackedWidget->setCurrentWidget(videoWidget);
+
 
 
 
@@ -195,8 +209,4 @@ void MainWindow::UpdateStyleFusion()
 
 
 
-void MainWindow::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    videoWidget->setFullScreen(true);
-    event->accept();
-}
+

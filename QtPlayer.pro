@@ -11,10 +11,14 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mediawidget.cpp \
+    videomask.cpp \
     videowidget.cpp
 
 HEADERS += \
     mainwindow.h \
+    mediawidget.h \
+    videomask.h \
     videowidget.h
 
 # Default rules for deployment.

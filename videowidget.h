@@ -4,24 +4,28 @@
 #include <QWidget>
 #include <QVideoWidget>
 #include <QMediaPlayer>
+#include <QSlider>
+#include <QAudioOutput>
 
 class VideoWidget : public QVideoWidget
 {
     Q_OBJECT
 public:
-    explicit VideoWidget(QMediaPlayer *player, QWidget *parent = nullptr);
+    explicit VideoWidget(QWidget *parent = nullptr);
 
 signals:
 
 private:
-    QMediaPlayer *player;
+    QWidget *parent;
 
 
 
-protected:
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
+
+
+//protected:
+//    virtual void mousePressEvent(QMouseEvent *event);
+//    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+//    virtual void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // VIDEOWIDGET_H

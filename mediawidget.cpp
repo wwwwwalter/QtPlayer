@@ -63,10 +63,6 @@ MediaWidget::MediaWidget(QWidget *parent)
 
 
 
-\
-
-
-
 
 
 
@@ -112,7 +108,6 @@ void MediaWidget::UpdateVolume(float volume)
 
 void MediaWidget::resizeEvent(QResizeEvent *event)
 {
-    qDebug()<<"resize";
     stackedWidget->setGeometry(0,0,width(),height());
 }
 

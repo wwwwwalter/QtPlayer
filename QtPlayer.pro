@@ -9,16 +9,28 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    audiotrackwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    medialistwidget.cpp \
     mediawidget.cpp \
+    preferencesdialog.cpp \
+    propertieswidget.cpp \
+    trackswidget.cpp \
     videomask.cpp \
+    videotrackwidget.cpp \
     videowidget.cpp
 
 HEADERS += \
+    audiotrackwidget.h \
     mainwindow.h \
+    medialistwidget.h \
     mediawidget.h \
+    preferencesdialog.h \
+    propertieswidget.h \
+    trackswidget.h \
     videomask.h \
+    videotrackwidget.h \
     videowidget.h
 
 # Default rules for deployment.
@@ -28,3 +40,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+FORMS += \
+    preferencesdialog.ui

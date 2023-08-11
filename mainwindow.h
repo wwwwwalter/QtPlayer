@@ -67,6 +67,7 @@ public:
     QMenu *view;
     QMenu *build;
     QMenu *tools;
+    QMenu *window;
     QMenu *help;
 
     //actions
@@ -89,11 +90,14 @@ public:
     QAction *buildproject;
     QAction *cleanproject;
 
-    //tools actions;
+    //tools actions
     QAction *opencv;
     QAction *ffmpeg;
 
-    //help actions;
+    //window actions
+    QAction *windowlayout;
+
+    //help actions
     QAction *about;
     QAction *aboutQt;
     QAction *document;
@@ -109,6 +113,8 @@ public:
     //build tool bar
 
     //tools tool bar
+
+    //window tool bar
 
     //help tool bar
     QToolBar *helpToolBar;

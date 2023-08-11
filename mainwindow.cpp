@@ -229,30 +229,14 @@ void MainWindow::CreateActions()
     newproject = new QAction(tr("New"));
     newproject->setShortcuts ( QKeySequence::New );
     connect(newproject,&QAction::triggered,this,[=]{
-        NewProjectDialog newProjectDialog(this);
-        connect(&newProjectDialog,&NewProjectDialog::UpdateMediaGrid,this,[=](int rols,int cols,int mediaWidgetStyle){
-            switch (mediaWidgetStyle) {
-            case 0:
-                ShowGridMediaWidgets(rols,cols);
-                break;
-            case 1:
-                ShowSplitterMediaWidgets();
-                break;
-            case 2:
-                break;
-            default:
-                break;
-            }
 
-        });
-        newProjectDialog.exec();
     });
     open = new QAction(tr("Open"));
     open->setShortcuts(QKeySequence::Open);
     connect(open,&QAction::triggered,this,[=]{
         QStringList mediaFilePath = QFileDialog::getOpenFileNames(this, tr("Open File"),
                                                              QDir::homePath()+"\\Videos",
-                                                             tr("Videos(*.mp4 *.m3u8);;Music(*.mp4 *.wav);;All (*.*)"));
+                                                             tr("Video(*.mp4 *.m3u8);;Audio(*.mp4 *.wav);;All (*.*)"));
         foreach (QString filePath,mediaFilePath) {
             QFileInfo fileInfo(filePath);
             mediaListWidget->AddMedia(fileInfo.fileName(),fileInfo.filePath());
@@ -280,6 +264,28 @@ void MainWindow::CreateActions()
     //tools actions
     opencv = new QAction(tr("OpenCV"));
     ffmpeg = new QAction(tr("FFmpeg"));
+
+    //window actions
+    windowlayout = new QAction(tr("window styles"));
+    connect(windowlayout,&QAction::triggered,this,[=]{
+        NewProjectDialog newProjectDialog(this);
+        connect(&newProjectDialog,&NewProjectDialog::UpdateMediaGrid,this,[=](int rols,int cols,int mediaWidgetStyle){
+            switch (mediaWidgetStyle) {
+            case 0:
+                ShowGridMediaWidgets(rols,cols);
+                break;
+            case 1:
+                ShowSplitterMediaWidgets();
+                break;
+            case 2:
+                break;
+            default:
+                break;
+            }
+
+        });
+        newProjectDialog.exec();
+    });
 
     //help actions
     about = new QAction(tr("About"));
@@ -324,6 +330,11 @@ void MainWindow::CreateMenus()
     menuBar()->addMenu(tools);
     tools->addAction(opencv);
     tools->addAction(ffmpeg);
+
+    //Window menu
+    window = new QMenu(tr("&Window"));
+    menuBar()->addMenu(window);
+    window->addAction(windowlayout);
 
     //Help menu
     help = new QMenu(tr("&Help"));

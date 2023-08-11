@@ -11,20 +11,34 @@ MediaListWidget::MediaListWidget(QWidget *parent)
     qDebug()<<"MediaListWidget";
 
 
-    model = new QStandardItemModel(1,2);
-    model->setHeaderData(0,Qt::Horizontal,"name");
-    model->setHeaderData(1,Qt::Horizontal,"path");
+    model = new QStandardItemModel;
+    model->setColumnCount(2);
+    model->setHeaderData(0,Qt::Horizontal,tr("name"));
+    model->setHeaderData(1,Qt::Horizontal,tr("path"));
     setModel(model);
 
-    QFont font;
-    font.setPointSize(13);
-    setFont(font);
+//    QFont font;
+//    font.setPointSize(13);
+//    setFont(font);
 
     //setShowGrid(false);
     setGridStyle(Qt::NoPen);
     setWordWrap(false);
-    horizontalHeader()->setDefaultSectionSize(400);
-    verticalHeader()->setDefaultSectionSize(15);
+    horizontalHeader()->setDefaultSectionSize(300);
+    horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+//    verticalHeader()->setDefaultSectionSize(50);
+
+
+
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    //context menu
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+    QAction *play = new QAction(tr("Play"));
+
+    addAction(play);
+
+
 
 
 

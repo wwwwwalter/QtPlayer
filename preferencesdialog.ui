@@ -54,11 +54,6 @@
             <height>16777215</height>
            </size>
           </property>
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-           </font>
-          </property>
           <property name="viewMode">
            <enum>QListView::ListMode</enum>
           </property>

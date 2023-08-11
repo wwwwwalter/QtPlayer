@@ -7,7 +7,7 @@ VideoMask::VideoMask(QWidget *parent)
 {
     //ui
     setText(tr("Video"));
-    setFont(QFont("微软雅黑",20,0,false));
+    setFont(QFont("微软雅黑",25,-1,false));
     setAlignment(Qt::AlignCenter);
     setStyleSheet("background-color: rgba(0, 255, 0, 0.5);");
     //setWindowOpacity(0.2);//useable

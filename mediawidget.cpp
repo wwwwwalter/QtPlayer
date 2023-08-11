@@ -14,6 +14,7 @@ MediaWidget::MediaWidget(QWidget *parent)
     playWidget = new QWidget;
     playWidget->setStyleSheet("background-color: rgba(0, 0, 0, 0.5);");
     QHBoxLayout *hboxlayout_play = new QHBoxLayout;
+    hboxlayout_play->setContentsMargins(0,0,0,0);
     playWidget->setLayout(hboxlayout_play);
 
     videoWidget = new VideoWidget;
@@ -27,7 +28,7 @@ MediaWidget::MediaWidget(QWidget *parent)
     hboxlayout_sound->addWidget(leftSoundSlider);
     hboxlayout_sound->addWidget(rightSoundSlider);
     hboxlayout_play->addWidget(videoWidget);
-    hboxlayout_play->addWidget(soundWidget);
+    //hboxlayout_play->addWidget(soundWidget);
 
 
     //video mask
@@ -37,7 +38,7 @@ MediaWidget::MediaWidget(QWidget *parent)
     stackedWidget = new QStackedWidget(this);
     stackedWidget->insertWidget(0,playWidget);
     stackedWidget->insertWidget(1,videoMask);
-    stackedWidget->setCurrentWidget(playWidget);
+    stackedWidget->setCurrentWidget(videoMask);
 
 
     //context menu
@@ -72,6 +73,15 @@ MediaWidget::MediaWidget(QWidget *parent)
 
 }
 
+MediaWidget::~MediaWidget()
+{
+    if(mediaPlayer->isPlaying()){
+        mediaPlayer->stop();
+        qDebug()<<"stop";
+    }
+    qDebug()<<"~MediaWidget";
+}
+
 void MediaWidget::LoadLocalFile()
 {
     QString localFilePath = QFileDialog::getOpenFileName(this, tr("Open File"),
@@ -79,6 +89,7 @@ void MediaWidget::LoadLocalFile()
                                                          tr("Videos (*.mp4)"));
     if(!localFilePath.isEmpty()){
         mediaPlayer->setSource(QUrl::fromLocalFile(localFilePath));
+        stackedWidget->setCurrentWidget(playWidget);
         mediaPlayer->play();
 
     }
@@ -115,12 +126,14 @@ void MediaWidget::resizeEvent(QResizeEvent *event)
 void MediaWidget::mousePressEvent(QMouseEvent *event)
 {
 
-    qDebug()<<"click";
+    //qDebug()<<"click";
 
 }
 
 void MediaWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    qDebug()<<"double click";
+    //qDebug()<<"double click";
 
 }
+
+

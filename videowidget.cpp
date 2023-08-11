@@ -14,6 +14,11 @@ VideoWidget::VideoWidget(QWidget *parent)
 
 }
 
+VideoWidget::~VideoWidget()
+{
+    qDebug()<<"~VideoWidget()";
+}
+
 
 //void VideoWidget::mousePressEvent(QMouseEvent *event)
 //{

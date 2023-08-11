@@ -11,6 +11,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QToolBar>
+#include <QScrollArea>
 #include "mediawidget.h"
 #include "medialistwidget.h"
 #include "propertieswidget.h"
@@ -29,8 +30,14 @@ public:
 
 private:
     //main widget
-    QWidget *centralWidget;
+    QWidget *centralMainWidget;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents;
     QList<MediaWidget*> *listMediaWidget;
+    void ShowGridMediaWidgets(int rols = 1,int cols = 1);
+    void ShowSplitterMediaWidgets(int rols = 2,int cols = 2);
+
+
 
     QLabel *labelMask;
     QPalette *palette;

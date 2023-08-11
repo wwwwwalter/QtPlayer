@@ -16,6 +16,7 @@ class MediaWidget : public QWidget
     Q_OBJECT
 public:
     explicit MediaWidget(QWidget *parent = nullptr);
+    ~MediaWidget();
 
 
 private:
@@ -58,6 +59,8 @@ protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
+
+
 };
 
 #endif

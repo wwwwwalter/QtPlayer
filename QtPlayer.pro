@@ -14,9 +14,11 @@ SOURCES += \
     mainwindow.cpp \
     medialistwidget.cpp \
     mediawidget.cpp \
+    newprojectdialog.cpp \
     preferencesdialog.cpp \
     propertieswidget.cpp \
     trackswidget.cpp \
+    videogridtableview.cpp \
     videomask.cpp \
     videotrackwidget.cpp \
     videowidget.cpp
@@ -26,9 +28,11 @@ HEADERS += \
     mainwindow.h \
     medialistwidget.h \
     mediawidget.h \
+    newprojectdialog.h \
     preferencesdialog.h \
     propertieswidget.h \
     trackswidget.h \
+    videogridtableview.h \
     videomask.h \
     videotrackwidget.h \
     videowidget.h
@@ -42,4 +46,5 @@ RESOURCES += \
     resource.qrc
 
 FORMS += \
+    newprojectdialog.ui \
     preferencesdialog.ui

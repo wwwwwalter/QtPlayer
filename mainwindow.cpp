@@ -21,7 +21,10 @@
 #include <QStatusBar>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QScrollArea>
+#include <QSplitter>
 #include "medialistwidget.h"
+#include "newprojectdialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //mainwindow
     setWindowIcon(QIcon(":/images/logo2.png"));
+    resize(1500,800);
 
 
 
@@ -36,24 +40,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //central widget
-    centralWidget = new QWidget;
-    setCentralWidget(centralWidget);
+    centralMainWidget = new QWidget;
+    setCentralWidget(centralMainWidget);
+
+
+
     listMediaWidget = new QList<MediaWidget*>;
-    QGridLayout *gridlayout = new QGridLayout;
-    gridlayout->setSpacing(1);
-
-    centralWidget->setLayout(gridlayout);
+    ShowGridMediaWidgets(1,1);
 
 
-    for (int i = 0; i < 2; ++i) {
-        gridlayout->setRowMinimumHeight(i,150);
-        for (int j = 0; j < 1; ++j) {
-            gridlayout->setColumnMinimumWidth(j,200);
-            MediaWidget *mediaWidget = new MediaWidget;
-            listMediaWidget->append(mediaWidget);
-            gridlayout->addWidget(mediaWidget,i,j);
-        }
-    }
+
 
 
 
@@ -169,11 +165,88 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::ShowGridMediaWidgets(int rols, int cols)
+{
+
+    if(centralWidget()!=nullptr){
+        //clean pre env
+        delete centralWidget();
+        centralMainWidget = new QWidget;
+        setCentralWidget(centralMainWidget);
+        QGridLayout *gridlayout = new QGridLayout;
+        gridlayout->setSpacing(1);
+        centralWidget()->setLayout(gridlayout);
+
+        for (int i = 0; i < rols; ++i) {
+            gridlayout->setRowMinimumHeight(i,150);
+            for (int j = 0; j < cols; ++j) {
+                gridlayout->setColumnMinimumWidth(j,200);
+                MediaWidget *mediaWidget = new MediaWidget;
+                listMediaWidget->append(mediaWidget);
+                gridlayout->addWidget(mediaWidget,i,j);
+            }
+        }
+    }
+}
+
+void MainWindow::ShowSplitterMediaWidgets(int rols, int cols)
+{
+    if(centralWidget()!=nullptr){
+        //clean pre env
+        delete centralWidget();
+        QSplitter *splitterMain = new QSplitter(Qt::Vertical);
+        QSplitter *splitterTop = new QSplitter(Qt::Horizontal);
+        QSplitter *splitterBottom = new QSplitter(Qt::Horizontal);
+
+        splitterMain->setHandleWidth(1);
+        splitterTop->setHandleWidth(1);
+        splitterBottom->setHandleWidth(1);
+
+        MediaWidget *topLeft = new MediaWidget;
+        MediaWidget *topRight = new MediaWidget;
+        MediaWidget *bottomLeft = new MediaWidget;
+        MediaWidget *bottomRight = new MediaWidget;
+        splitterTop->addWidget(topLeft);
+        splitterTop->addWidget(topRight);
+        splitterBottom->addWidget(bottomLeft);
+        splitterBottom->addWidget(bottomRight);
+        splitterMain->addWidget(splitterTop);
+        splitterMain->addWidget(splitterBottom);
+
+
+        splitterTop->setStretchFactor(0,5);
+        splitterTop->setStretchFactor(1,3);
+
+
+
+        setCentralWidget(splitterMain);
+    }
+}
+
 void MainWindow::CreateActions()
 {
     //file actions
     newproject = new QAction(tr("New"));
     newproject->setShortcuts ( QKeySequence::New );
+    connect(newproject,&QAction::triggered,this,[=]{
+        NewProjectDialog newProjectDialog(this);
+        connect(&newProjectDialog,&NewProjectDialog::UpdateMediaGrid,this,[=](int rols,int cols,int mediaWidgetStyle){
+            switch (mediaWidgetStyle) {
+            case 0:
+                ShowGridMediaWidgets(rols,cols);
+                break;
+            case 1:
+                ShowSplitterMediaWidgets();
+                break;
+            case 2:
+                break;
+            default:
+                break;
+            }
+
+        });
+        newProjectDialog.exec();
+    });
     open = new QAction(tr("Open"));
     open->setShortcuts(QKeySequence::Open);
     connect(open,&QAction::triggered,this,[=]{
@@ -187,7 +260,7 @@ void MainWindow::CreateActions()
     });
     preferencs = new QAction(tr("Preferences"));
     connect(preferencs,&QAction::triggered,this,[=]{
-        PreferencesDialog preferencesDialog;
+        PreferencesDialog preferencesDialog(this);
         preferencesDialog.exec();
     });
 

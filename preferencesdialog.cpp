@@ -24,6 +24,7 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
     ui->settingList->setModel(model);
 
 
+
     //Environment
     ui->themeComboBox->addItems(QStyleFactory::keys());
     connect(ui->themeComboBox,&QComboBox::currentIndexChanged,[=]{

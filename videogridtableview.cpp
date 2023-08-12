@@ -16,6 +16,10 @@ VideoGridTableView::VideoGridTableView(QWidget *parent)
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
+    selectedColNum = 0;
+    selectedRowNum = 0;
+
+
 
     connect(this,&VideoGridTableView::pressed,this,[=](const QModelIndex &index){
         beginColNum = index.column();

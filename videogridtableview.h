@@ -16,9 +16,10 @@ public:
 public:
     QStandardItemModel *model;
 
-
+private:
     int beginColNum,endColNum;
     int beginRowNum,endRowNum;
+public:
     int selectedColNum;
     int selectedRowNum;
 

@@ -3,5 +3,10 @@
         <file>images/logo.png</file>
         <file>images/logo2.png</file>
         <file>images/logo3.png</file>
+        <file>images/homepage_logo.png</file>
+        <file>qss/black.qss</file>
+        <file>qss/default.qss</file>
+        <file>qss/white.qss</file>
+        <file>markdowm/homepage.md</file>
     </qresource>
 </RCC>

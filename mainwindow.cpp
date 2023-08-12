@@ -23,8 +23,12 @@
 #include <QFileDialog>
 #include <QScrollArea>
 #include <QSplitter>
+#include <QMessageBox>
+#include <QInputDialog>
 #include "medialistwidget.h"
-#include "newprojectdialog.h"
+#include "newspacelayoutdialog.h"
+#include <widgets/SpaceTab/spacetab.h>
+#include "common/commomenum.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -32,50 +36,31 @@ MainWindow::MainWindow(QWidget *parent)
 
     //mainwindow
     setWindowIcon(QIcon(":/images/logo2.png"));
+    setWindowTitle(tr("XPlayer"));
+    loadStyleSheet();
     resize(1500,800);
 
 
 
-
-
-
     //central widget
-    centralMainWidget = new QWidget;
-    setCentralWidget(centralMainWidget);
+    welcomePage = new WelComePage(this);
+    spaceTabWidget = new SpaceTabWidget(this);
+    connect(spaceTabWidget,&SpaceTabWidget::currentChanged,this,[=](int index){
+        //TODO
+    });
 
 
-
-    listMediaWidget = new QList<MediaWidget*>;
-    ShowGridMediaWidgets(1,1);
-
-
-
-
-
+    setCentralWidget(welcomePage);
 
 
 
 
 
-    //widget
-    labelMask = new QLabel;
-    labelMask->setText(tr("Video"));
-    labelMask->setFont(QFont("微软雅黑",20,0,false));
-    labelMask->setAlignment(Qt::AlignCenter);
-    labelMask->setAttribute(Qt::WA_TranslucentBackground,true);
-    QPalette palette;
-    labelMask->setAutoFillBackground(true);
-    palette.setColor(QPalette::WindowText,QColor("white"));
-    labelMask->setPalette(palette);
 
-    QVBoxLayout *vboxlayout_lablemask = new QVBoxLayout;
-    QSlider *duration_slider = new QSlider;
-    duration_slider->setOrientation(Qt::Horizontal);
-    //duration_slider->setAutoFillBackground(true);
-    //duration_slider->setAttribute(Qt::WA_TranslucentBackground,true);
-    vboxlayout_lablemask->addStretch();
-    vboxlayout_lablemask->addWidget(duration_slider);
-    labelMask->setLayout(vboxlayout_lablemask);
+
+
+
+
 
 
 
@@ -118,14 +103,17 @@ MainWindow::MainWindow(QWidget *parent)
     //top dock widget
     topDockWidget = new QDockWidget("AudioTrack",this);
     topDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::TopDockWidgetArea,topDockWidget);
+    QWidget *topDockTitleBar = new QWidget;
+    topDockWidget->setTitleBarWidget(topDockTitleBar);
+    addDockWidget(Qt::BottomDockWidgetArea,topDockWidget);
     audioTrackWidget = new AudioTrackWidget;
     topDockWidget->setWidget(audioTrackWidget);
-    topDockWidget->close();
+
 
 
     //left dock widget
     leftDockWidget = new QDockWidget(tr("MediaList"),this);
+    topDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
     addDockWidget(Qt::LeftDockWidgetArea,leftDockWidget);
     mediaListWidget = new MediaListWidget;
     leftDockWidget->setWidget(mediaListWidget);
@@ -135,6 +123,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //right dock widget
     rightDockWidget = new QDockWidget(tr("Properties"),this);
+    topDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea,rightDockWidget);
     protertiesWidget = new PropertiesWidget;
     rightDockWidget->setWidget(protertiesWidget);
@@ -144,9 +133,15 @@ MainWindow::MainWindow(QWidget *parent)
     //bottom dock widget
     bottomDockWidget = new QDockWidget(tr("VideoTrack"),this);
     bottomDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
+    QWidget *bottomDockTitleBar = new QWidget;
+    bottomDockWidget->setTitleBarWidget(bottomDockTitleBar);
     addDockWidget(Qt::BottomDockWidgetArea,bottomDockWidget);
     videoTrackWidget = new VideoTrackWidget;
     bottomDockWidget->setWidget(videoTrackWidget);
+
+    //combine audio & video track
+    tabifyDockWidget(bottomDockWidget,topDockWidget);
+    bottomDockWidget->raise();
 
 
 
@@ -165,63 +160,9 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::ShowGridMediaWidgets(int rols, int cols)
-{
-
-    if(centralWidget()!=nullptr){
-        //clean pre env
-        delete centralWidget();
-        centralMainWidget = new QWidget;
-        setCentralWidget(centralMainWidget);
-        QGridLayout *gridlayout = new QGridLayout;
-        gridlayout->setSpacing(1);
-        centralWidget()->setLayout(gridlayout);
-
-        for (int i = 0; i < rols; ++i) {
-            gridlayout->setRowMinimumHeight(i,150);
-            for (int j = 0; j < cols; ++j) {
-                gridlayout->setColumnMinimumWidth(j,200);
-                MediaWidget *mediaWidget = new MediaWidget;
-                listMediaWidget->append(mediaWidget);
-                gridlayout->addWidget(mediaWidget,i,j);
-            }
-        }
-    }
-}
-
-void MainWindow::ShowSplitterMediaWidgets(int rols, int cols)
-{
-    if(centralWidget()!=nullptr){
-        //clean pre env
-        delete centralWidget();
-        QSplitter *splitterMain = new QSplitter(Qt::Vertical);
-        QSplitter *splitterTop = new QSplitter(Qt::Horizontal);
-        QSplitter *splitterBottom = new QSplitter(Qt::Horizontal);
-
-        splitterMain->setHandleWidth(1);
-        splitterTop->setHandleWidth(1);
-        splitterBottom->setHandleWidth(1);
-
-        MediaWidget *topLeft = new MediaWidget;
-        MediaWidget *topRight = new MediaWidget;
-        MediaWidget *bottomLeft = new MediaWidget;
-        MediaWidget *bottomRight = new MediaWidget;
-        splitterTop->addWidget(topLeft);
-        splitterTop->addWidget(topRight);
-        splitterBottom->addWidget(bottomLeft);
-        splitterBottom->addWidget(bottomRight);
-        splitterMain->addWidget(splitterTop);
-        splitterMain->addWidget(splitterBottom);
-
-
-        splitterTop->setStretchFactor(0,5);
-        splitterTop->setStretchFactor(1,3);
 
 
 
-        setCentralWidget(splitterMain);
-    }
-}
 
 void MainWindow::CreateActions()
 {
@@ -229,6 +170,22 @@ void MainWindow::CreateActions()
     newproject = new QAction(tr("New"));
     newproject->setShortcuts ( QKeySequence::New );
     connect(newproject,&QAction::triggered,this,[=]{
+
+    });
+
+    newTab = new QAction(tr("New Tab"));
+    newTab->setShortcut(QKeySequence("Ctrl+T"));
+    connect(newTab,&QAction::triggered,this,[=](){
+        QString spaceName = QInputDialog::getText(this,tr("New Space Tab"),tr("Space Name"));
+        if(!spaceName.isEmpty()){
+            setCentralWidget(spaceTabWidget);
+            spaceTabWidget->addSpaceTab(spaceName);
+        }
+    });
+
+    newWindow = new QAction(tr("New Window"));
+    newWindow->setShortcut(QKeySequence("Ctrl+W"));
+    connect(newWindow,&QAction::triggered,this,[=](){
 
     });
     open = new QAction(tr("Open"));
@@ -265,26 +222,22 @@ void MainWindow::CreateActions()
     opencv = new QAction(tr("OpenCV"));
     ffmpeg = new QAction(tr("FFmpeg"));
 
-    //table actions
-    tableStyle = new QAction(tr("Table Style"));
-    connect(tableStyle,&QAction::triggered,this,[=]{
-        NewProjectDialog newProjectDialog(this);
-        connect(&newProjectDialog,&NewProjectDialog::UpdateMediaGrid,this,[=](int rols,int cols,int mediaWidgetStyle){
-            switch (mediaWidgetStyle) {
-            case 0:
-                ShowGridMediaWidgets(rols,cols);
-                break;
-            case 1:
-                ShowSplitterMediaWidgets();
-                break;
-            case 2:
-                break;
-            default:
-                break;
+    //space actions
+    spaceLayout = new QAction(tr("Space layout"));
+    spaceLayout->setShortcut(QKeySequence("Ctrl+L"));
+    connect(spaceLayout,&QAction::triggered,this,[=]{
+        NewSpaceLayoutDialog newSpaceLayoutDialog(this);
+        connect(&newSpaceLayoutDialog,&NewSpaceLayoutDialog::UpdateSpaceLayout,this,[=](int rols,int cols,CommomEnum::SpaceType spaceType){
+            if(currentSpaceTabWidget()!=nullptr){
+                SpaceTab *tab = static_cast<SpaceTab*>(currentSpaceTabWidget());
+                tab->editSelf(rols,cols,spaceType);
+            }
+            else{
+                QMessageBox::warning(this,tr("Tips"),"Please new one space tab first!");
             }
 
         });
-        newProjectDialog.exec();
+        newSpaceLayoutDialog.exec();
     });
 
     //help actions
@@ -301,7 +254,11 @@ void MainWindow::CreateMenus()
     file = new QMenu(tr("&File"));
     menuBar()->addMenu(file);
     file->addAction(newproject);
+    file->addAction(newTab);
+    file->addAction(newWindow);
+    file->addSeparator();
     file->addAction(open);
+    file->addSeparator();
     file->addAction(preferencs);
 
     //Edit menu
@@ -331,16 +288,17 @@ void MainWindow::CreateMenus()
     tools->addAction(opencv);
     tools->addAction(ffmpeg);
 
-    //table menu
-    table = new QMenu(tr("&Table"));
-    menuBar()->addMenu(table);
-    table->addAction(tableStyle);
+    //space menu
+    space = new QMenu(tr("&Space"));
+    menuBar()->addMenu(space);
+    space->addAction(spaceLayout);
 
     //Help menu
     help = new QMenu(tr("&Help"));
     menuBar()->addMenu(help);
     help->addAction(about);
     help->addAction(aboutQt);
+    help->addSeparator();
     help->addAction(document);
 
 
@@ -362,6 +320,41 @@ void MainWindow::CreateToolBars()
 void MainWindow::CreateStatusBars()
 {
 
+}
+
+void MainWindow::loadStyleSheet()
+{
+    QString qssFilePath = ":/qss/default.qss";
+    QFile file(qssFilePath);
+    if(file.open(QFile::ReadOnly)){
+        qApp->setStyleSheet(QString::fromLocal8Bit(file.readAll()));
+        file.close();
+    }
+}
+
+void MainWindow::loadStyleSheet(QColor color)
+{
+    QString qssFilePath;
+    if(color == Qt::white){
+        qssFilePath = ":qss/white.qss";
+    }
+    else if(color == Qt::black){
+        qssFilePath = ":qss/black.qss";
+    }
+    else{
+        qssFilePath = ":qss/default.qss";
+    }
+
+    QFile file(qssFilePath);
+    if(file.open(QFile::ReadOnly)){
+        qApp->setStyleSheet(QString::fromLocal8Bit(file.readAll()));
+        file.close();
+    }
+}
+
+QWidget *MainWindow::currentSpaceTabWidget()
+{
+    return spaceTabWidget->currentWidget();
 }
 
 

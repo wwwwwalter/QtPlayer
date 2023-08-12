@@ -17,11 +17,7 @@ MediaListWidget::MediaListWidget(QWidget *parent)
     model->setHeaderData(1,Qt::Horizontal,tr("path"));
     setModel(model);
 
-//    QFont font;
-//    font.setPointSize(13);
-//    setFont(font);
 
-    //setShowGrid(false);
     setGridStyle(Qt::NoPen);
     setWordWrap(false);
     horizontalHeader()->setDefaultSectionSize(300);

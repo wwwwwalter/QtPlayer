@@ -2,12 +2,16 @@
 #define AUDIOTRACKWIDGET_H
 
 #include <QWidget>
+#include <QTabWidget>
 
-class AudioTrackWidget : public QWidget
+class AudioTrackWidget : public QTabWidget
 {
     Q_OBJECT
 public:
     explicit AudioTrackWidget(QWidget *parent = nullptr);
+
+private:
+    QWidget *audioTrackTab;
 
 signals:
 

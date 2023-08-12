@@ -10,32 +10,40 @@ CONFIG += c++17
 
 SOURCES += \
     audiotrackwidget.cpp \
+    common/commomenum.cpp \
     main.cpp \
     mainwindow.cpp \
     medialistwidget.cpp \
     mediawidget.cpp \
-    newprojectdialog.cpp \
+    newspacelayoutdialog.cpp \
     preferencesdialog.cpp \
     propertieswidget.cpp \
+    spacetabwidget.cpp \
     trackswidget.cpp \
     videogridtableview.cpp \
     videomask.cpp \
     videotrackwidget.cpp \
-    videowidget.cpp
+    videowidget.cpp \
+    welcomepage.cpp \
+    widgets/SpaceTab/spacetab.cpp
 
 HEADERS += \
     audiotrackwidget.h \
+    common/commomenum.h \
     mainwindow.h \
     medialistwidget.h \
     mediawidget.h \
-    newprojectdialog.h \
+    newspacelayoutdialog.h \
     preferencesdialog.h \
     propertieswidget.h \
+    spacetabwidget.h \
     trackswidget.h \
     videogridtableview.h \
     videomask.h \
     videotrackwidget.h \
-    videowidget.h
+    videowidget.h \
+    welcomepage.h \
+    widgets/SpaceTab/spacetab.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -46,5 +54,5 @@ RESOURCES += \
     resource.qrc
 
 FORMS += \
-    newprojectdialog.ui \
+    newspacelayoutdialog.ui \
     preferencesdialog.ui

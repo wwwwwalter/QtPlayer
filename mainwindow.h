@@ -12,11 +12,15 @@
 #include <QAction>
 #include <QToolBar>
 #include <QScrollArea>
+#include <QColor>
 #include "mediawidget.h"
 #include "medialistwidget.h"
 #include "propertieswidget.h"
 #include "audiotrackwidget.h"
 #include "videotrackwidget.h"
+#include "spacetabwidget.h"
+#include "welcomepage.h"
+#include "common/commomenum.h"
 
 class MainWindow : public QMainWindow
 {
@@ -30,12 +34,10 @@ public:
 
 private:
     //main widget
-    QWidget *centralMainWidget;
-    QScrollArea *scrollArea;
-    QWidget *scrollAreaWidgetContents;
-    QList<MediaWidget*> *listMediaWidget;
-    void ShowGridMediaWidgets(int rols = 1,int cols = 1);
-    void ShowSplitterMediaWidgets(int rols = 2,int cols = 2);
+    WelComePage *welcomePage;
+    SpaceTabWidget *spaceTabWidget;
+
+
 
 
 
@@ -67,12 +69,14 @@ public:
     QMenu *view;
     QMenu *build;
     QMenu *tools;
-    QMenu *table;
+    QMenu *space;
     QMenu *help;
 
     //actions
     //file actions
     QAction *newproject;
+    QAction *newTab;
+    QAction *newWindow;
     QAction *open;
     QAction *preferencs;
 
@@ -94,8 +98,8 @@ public:
     QAction *opencv;
     QAction *ffmpeg;
 
-    //table actions
-    QAction *tableStyle;
+    //space actions
+    QAction *spaceLayout;
 
     //help actions
     QAction *about;
@@ -114,7 +118,7 @@ public:
 
     //tools tool bar
 
-    //table tool bar
+    //space tool bar
 
     //help tool bar
     QToolBar *helpToolBar;
@@ -128,14 +132,17 @@ public:
     void CreateToolBars();
     void CreateStatusBars();
 
+public:
+    void loadStyleSheet();
+    void loadStyleSheet(QColor color);
 
 
 
+public:
+    QWidget *currentSpaceTabWidget();
 
 
 
-    //action slots
-public slots:
 
 
 

@@ -8,6 +8,7 @@ NewProjectDialog::NewProjectDialog(QWidget *parent) :
     ui(new Ui::NewProjectDialog)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Table Style"));
 
 
 

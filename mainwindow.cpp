@@ -265,9 +265,9 @@ void MainWindow::CreateActions()
     opencv = new QAction(tr("OpenCV"));
     ffmpeg = new QAction(tr("FFmpeg"));
 
-    //window actions
-    windowlayout = new QAction(tr("window styles"));
-    connect(windowlayout,&QAction::triggered,this,[=]{
+    //table actions
+    tableStyle = new QAction(tr("Table Style"));
+    connect(tableStyle,&QAction::triggered,this,[=]{
         NewProjectDialog newProjectDialog(this);
         connect(&newProjectDialog,&NewProjectDialog::UpdateMediaGrid,this,[=](int rols,int cols,int mediaWidgetStyle){
             switch (mediaWidgetStyle) {
@@ -331,10 +331,10 @@ void MainWindow::CreateMenus()
     tools->addAction(opencv);
     tools->addAction(ffmpeg);
 
-    //Window menu
-    window = new QMenu(tr("&Window"));
-    menuBar()->addMenu(window);
-    window->addAction(windowlayout);
+    //table menu
+    table = new QMenu(tr("&Table"));
+    menuBar()->addMenu(table);
+    table->addAction(tableStyle);
 
     //Help menu
     help = new QMenu(tr("&Help"));

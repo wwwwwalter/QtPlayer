@@ -67,7 +67,7 @@ public:
     QMenu *view;
     QMenu *build;
     QMenu *tools;
-    QMenu *window;
+    QMenu *table;
     QMenu *help;
 
     //actions
@@ -94,8 +94,8 @@ public:
     QAction *opencv;
     QAction *ffmpeg;
 
-    //window actions
-    QAction *windowlayout;
+    //table actions
+    QAction *tableStyle;
 
     //help actions
     QAction *about;
@@ -114,7 +114,7 @@ public:
 
     //tools tool bar
 
-    //window tool bar
+    //table tool bar
 
     //help tool bar
     QToolBar *helpToolBar;

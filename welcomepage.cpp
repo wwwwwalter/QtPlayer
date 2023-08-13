@@ -17,7 +17,7 @@ WelComePage::WelComePage(QWidget *parent)
     vboxlayout->addWidget(shortcutLabel);
 
     picLabel->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
-    picLabel->setPixmap(QPixmap(":/images/homepage_logo.png"));
+    picLabel->setPixmap(QPixmap(":/images/grey/homepage_logo.png"));
 
     shortcutLabel->setAlignment(Qt::AlignHCenter);
     shortcutLabel->setTextFormat(Qt::MarkdownText);

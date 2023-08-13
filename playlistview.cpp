@@ -1,5 +1,7 @@
 #include "playlistview.h"
 
+#include <QIcon>
+
 PlayListView::PlayListView(QWidget *parent)
     : QTreeView{parent}
 {
@@ -12,9 +14,10 @@ PlayListView::PlayListView(QWidget *parent)
 void PlayListView::addFile(QFileInfo fileInfo)
 {
     QList<QStandardItem*> row;
-    row.append(new QStandardItem(fileInfo.fileName()));
+    row.append(new QStandardItem(QIcon(":/images/green/video_file.svg"),fileInfo.fileName()));
     row.append(new QStandardItem(fileInfo.path()));
     row.append(new QStandardItem(fileInfo.suffix()));
+
     model->appendRow(row);
 }
 

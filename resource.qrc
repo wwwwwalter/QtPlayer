@@ -1,12 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/logo.png</file>
-        <file>images/logo2.png</file>
-        <file>images/logo3.png</file>
-        <file>images/homepage_logo.png</file>
         <file>qss/black.qss</file>
         <file>qss/default.qss</file>
         <file>qss/white.qss</file>
         <file>markdowm/homepage.md</file>
+        <file>images/green/audio_file.svg</file>
+        <file>images/green/folder_add.svg</file>
+        <file>images/green/folder_close.svg</file>
+        <file>images/green/folder_open.svg</file>
+        <file>images/green/logo.svg</file>
+        <file>images/green/media.svg</file>
+        <file>images/green/video_file.svg</file>
+        <file>images/green/tab.svg</file>
+        <file>images/grey/homepage_logo.svg</file>
+        <file>images/grey/homepage_logo.png</file>
     </qresource>
 </RCC>

@@ -16,6 +16,7 @@ TabListView::TabListView(QWidget *parent)
 void TabListView::addTab(QString tabName)
 {
     QStandardItem *item = new QStandardItem(tabName);
+    item->setIcon(QIcon(":/images/green/folder_close.svg"));
     model->appendRow(item);
 }
 
@@ -32,6 +33,8 @@ void TabListView::addMedias(int tabIndex, QList<QString> mediaNameList)
     qDebug()<<tabItem;
     foreach (QString mediaName, mediaNameList) {
         TabStandardItem *item = new TabStandardItem(mediaName);
+        item->setIcon(QIcon(":/images/green/media.svg"));
+
         tabItem->appendRow(item);
     }
     setExpanded(tabItem->index(),true);

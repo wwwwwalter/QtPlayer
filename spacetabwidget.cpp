@@ -39,7 +39,7 @@ SpaceTabWidget::~SpaceTabWidget()
 void SpaceTabWidget::addSpaceTab(QString tabName)
 {
     SpaceTab *tab = new SpaceTab;
-    addTab(tab,tabName);
+    addTab(tab,QIcon(":/images/green/folder_close.svg"),tabName);
     setCurrentWidget(tab);
 }
 

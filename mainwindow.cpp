@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     //mainwindow
-    setWindowIcon(QIcon(":/images/logo2.png"));
+    setWindowIcon(QIcon(QString::fromLocal8Bit(":/images/green/logo.svg")));
     setWindowTitle(tr("XPlayer"));
     loadStyleSheet();
     resize(1500,800);

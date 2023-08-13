@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 
 
-#include <QICon>
+
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPalette>
@@ -25,7 +25,7 @@
 #include <QSplitter>
 #include <QMessageBox>
 #include <QInputDialog>
-#include "medialistwidget.h"
+#include <QIcon>
 #include "newspacelayoutdialog.h"
 #include <widgets/SpaceTab/spacetab.h>
 #include "common/commomenum.h"
@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle(tr("XPlayer"));
     loadStyleSheet();
     resize(1500,800);
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
 
 
 
@@ -109,48 +110,62 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    //top dock widget
-    topDockWidget = new QDockWidget("AudioTrack",this);
-    topDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
-    QWidget *topDockTitleBar = new QWidget;
-    topDockWidget->setTitleBarWidget(topDockTitleBar);
-    addDockWidget(Qt::BottomDockWidgetArea,topDockWidget);
-    audioTrackWidget = new AudioTrackWidget;
-    topDockWidget->setWidget(audioTrackWidget);
-
-
-
-    //left dock widget
-    leftDockWidget = new QDockWidget(tr("MediaList"),this);
-    topDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
-    addDockWidget(Qt::LeftDockWidgetArea,leftDockWidget);
-    mediaListWidget = new MediaListWidget;
-    leftDockWidget->setWidget(mediaListWidget);
 
 
 
 
-    //right dock widget
-    rightDockWidget = new QDockWidget(tr("Properties"),this);
-    topDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
-    addDockWidget(Qt::RightDockWidgetArea,rightDockWidget);
+
+
+    //tabList dock widget
+    tabListDockWidget = new QDockWidget(tr("TabList"),this);
+    tabListDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
+    addDockWidget(Qt::LeftDockWidgetArea,tabListDockWidget);
+    tabListView = new TabListView;
+    tabListDockWidget->setWidget(tabListView);
+
+
+
+    //playList dock widget
+    playListDockWidget = new QDockWidget(tr("MediaPlayList"),this);
+    playListDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
+    addDockWidget(Qt::LeftDockWidgetArea,playListDockWidget);
+    playListWidget = new PlayListView;
+    playListDockWidget->setWidget(playListWidget);
+
+    //not combine audio & video track
+    //tabListDockWidget->raise();
+
+
+
+    //properties dock widget
+    propertiesDockWidget = new QDockWidget(tr("Properties"),this);
+    propertiesDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
+    addDockWidget(Qt::RightDockWidgetArea,propertiesDockWidget);
     protertiesWidget = new PropertiesWidget;
-    rightDockWidget->setWidget(protertiesWidget);
+    propertiesDockWidget->setWidget(protertiesWidget);
 
 
+    //audioTrack dock widget
+    audioTrackDockWidget = new QDockWidget("AudioTrack",this);
+    audioTrackDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
+    QWidget *topDockTitleBar = new QWidget;
+    audioTrackDockWidget->setTitleBarWidget(topDockTitleBar);
+    addDockWidget(Qt::BottomDockWidgetArea,audioTrackDockWidget);
+    audioTrackWidget = new AudioTrackWidget;
+    audioTrackDockWidget->setWidget(audioTrackWidget);
 
-    //bottom dock widget
-    bottomDockWidget = new QDockWidget(tr("VideoTrack"),this);
-    bottomDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
+    //videoTrack dock widget
+    videoTrackDockWidget = new QDockWidget(tr("VideoTrack"),this);
+    videoTrackDockWidget->setAllowedAreas(Qt::TopDockWidgetArea|Qt::BottomDockWidgetArea);
     QWidget *bottomDockTitleBar = new QWidget;
-    bottomDockWidget->setTitleBarWidget(bottomDockTitleBar);
-    addDockWidget(Qt::BottomDockWidgetArea,bottomDockWidget);
+    videoTrackDockWidget->setTitleBarWidget(bottomDockTitleBar);
+    addDockWidget(Qt::BottomDockWidgetArea,videoTrackDockWidget);
     videoTrackWidget = new VideoTrackWidget;
-    bottomDockWidget->setWidget(videoTrackWidget);
+    videoTrackDockWidget->setWidget(videoTrackWidget);
 
     //combine audio & video track
-    tabifyDockWidget(bottomDockWidget,topDockWidget);
-    bottomDockWidget->raise();
+    tabifyDockWidget(videoTrackDockWidget,audioTrackDockWidget);
+    videoTrackDockWidget->raise();
 
 
 
@@ -185,10 +200,11 @@ void MainWindow::CreateActions()
     newTab = new QAction(tr("New Tab"));
     newTab->setShortcut(QKeySequence("Ctrl+T"));
     connect(newTab,&QAction::triggered,this,[=](){
-        QString spaceName = QInputDialog::getText(this,tr("New Space Tab"),tr("Space Name"));
-        if(!spaceName.isEmpty()){
+        QString tabName = QInputDialog::getText(this,tr("New Space Tab"),tr("Tab Name"));
+        if(!tabName.isEmpty()){
             centralStackWidget->setCurrentWidget(spaceTabWidget);
-            spaceTabWidget->addSpaceTab(spaceName);
+            spaceTabWidget->addSpaceTab(tabName);
+            tabListView->addTab(tabName);
         }
     });
 
@@ -205,7 +221,7 @@ void MainWindow::CreateActions()
                                                              tr("Video(*.mp4 *.m3u8);;Audio(*.mp4 *.wav);;All (*.*)"));
         foreach (QString filePath,mediaFilePath) {
             QFileInfo fileInfo(filePath);
-            mediaListWidget->AddMedia(fileInfo.fileName(),fileInfo.filePath());
+            playListWidget->addFile(fileInfo);
         }
     });
     preferencs = new QAction(tr("Preferences"));
@@ -230,6 +246,9 @@ void MainWindow::CreateActions()
     //tools actions
     opencv = new QAction(tr("OpenCV"));
     ffmpeg = new QAction(tr("FFmpeg"));
+    connect(opencv,&QAction::triggered,this,[=]{
+        tabListView->deleteMedia(currentSpaceTabWidgetIndex(),1);
+    });
 
     //space actions
     spaceLayout = new QAction(tr("Space layout"));
@@ -240,6 +259,8 @@ void MainWindow::CreateActions()
             if(currentSpaceTabWidget()!=nullptr){
                 SpaceTab *tab = static_cast<SpaceTab*>(currentSpaceTabWidget());
                 tab->editSelf(rols,cols,spaceType);
+                QList<QString> tabNamelist(rols*cols,tr("media"));
+                tabListView->addMedias(currentSpaceTabWidgetIndex(),tabNamelist);
             }
             else{
                 QMessageBox::warning(this,tr("Tips"),"Please new one space tab first!");
@@ -279,10 +300,12 @@ void MainWindow::CreateMenus()
     //View menu
     view = new QMenu(tr("&View"));
     menuBar()->addMenu(view);
-    view->addAction(topDockWidget->toggleViewAction());
-    view->addAction(leftDockWidget->toggleViewAction());
-    view->addAction(rightDockWidget->toggleViewAction());
-    view->addAction(bottomDockWidget->toggleViewAction());
+
+    view->addAction(tabListDockWidget->toggleViewAction());
+    view->addAction(playListDockWidget->toggleViewAction());
+    view->addAction(propertiesDockWidget->toggleViewAction());
+    view->addAction(videoTrackDockWidget->toggleViewAction());
+    view->addAction(audioTrackDockWidget->toggleViewAction());
 
 
     //Build menu
@@ -364,6 +387,11 @@ void MainWindow::loadStyleSheet(QColor color)
 QWidget *MainWindow::currentSpaceTabWidget()
 {
     return spaceTabWidget->currentWidget();
+}
+
+int MainWindow::currentSpaceTabWidgetIndex()
+{
+    return spaceTabWidget->currentIndex();
 }
 
 

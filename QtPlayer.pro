@@ -11,14 +11,18 @@ CONFIG += c++17
 SOURCES += \
     audiotrackwidget.cpp \
     common/commomenum.cpp \
+    common/spacefile.cpp \
     main.cpp \
     mainwindow.cpp \
     medialistwidget.cpp \
     mediawidget.cpp \
     newspacelayoutdialog.cpp \
+    playlistview.cpp \
     preferencesdialog.cpp \
     propertieswidget.cpp \
     spacetabwidget.cpp \
+    tablistview.cpp \
+    tabstandarditem.cpp \
     trackswidget.cpp \
     videogridtableview.cpp \
     videomask.cpp \
@@ -30,13 +34,17 @@ SOURCES += \
 HEADERS += \
     audiotrackwidget.h \
     common/commomenum.h \
+    common/spacefile.h \
     mainwindow.h \
     medialistwidget.h \
     mediawidget.h \
     newspacelayoutdialog.h \
+    playlistview.h \
     preferencesdialog.h \
     propertieswidget.h \
     spacetabwidget.h \
+    tablistview.h \
+    tabstandarditem.h \
     trackswidget.h \
     videogridtableview.h \
     videomask.h \

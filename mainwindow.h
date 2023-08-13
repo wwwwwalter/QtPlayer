@@ -20,6 +20,8 @@
 #include "videotrackwidget.h"
 #include "spacetabwidget.h"
 #include "welcomepage.h"
+#include "tablistview.h"
+#include "playlistview.h"
 #include "common/commomenum.h"
 
 class MainWindow : public QMainWindow
@@ -50,13 +52,16 @@ private:
 
 
     //dock widget
-    QDockWidget *topDockWidget;
-    QDockWidget *leftDockWidget;
-    QDockWidget *bottomDockWidget;
-    QDockWidget *rightDockWidget;
+    QDockWidget *tabListDockWidget;
+    QDockWidget *playListDockWidget;
+    QDockWidget *propertiesDockWidget;
+    QDockWidget *videoTrackDockWidget;
+    QDockWidget *audioTrackDockWidget;
+
 
     //dock widget children
-    MediaListWidget *mediaListWidget;
+    TabListView *tabListView;
+    PlayListView *playListWidget;
     PropertiesWidget *protertiesWidget;
     AudioTrackWidget *audioTrackWidget;
     VideoTrackWidget *videoTrackWidget;
@@ -86,10 +91,11 @@ public:
     QAction *redo;
 
     //view actions
-    QAction *showLeftDock;
-    QAction *showRightDock;
-    QAction *showBottomDock;
-    QAction *showTopDock;
+    QAction *showTabListDock;
+    QAction *showPlayListDock;
+    QAction *showPropertiesDock;
+    QAction *showVideoTrackDock;
+    QAction *showAudioTrackDock;
 
     //build actions
     QAction *buildproject;
@@ -141,6 +147,7 @@ public:
 
 public:
     QWidget *currentSpaceTabWidget();
+    int currentSpaceTabWidgetIndex();
 
 
 

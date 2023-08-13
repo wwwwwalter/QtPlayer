@@ -17,6 +17,17 @@ public:
     Q_ENUM(SpaceType)
 
 
+
+    enum FileType{
+        Video,
+        Audio,
+        Picture,
+        Stream,
+        Model,
+    };
+    Q_ENUM(FileType)
+
+
 signals:
 
 };

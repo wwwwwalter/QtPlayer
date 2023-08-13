@@ -24,6 +24,9 @@ SpaceTabWidget::SpaceTabWidget(QWidget *parent)
         QWidget *willDeleteTab = widget(index);
         removeTab(index);
         willDeleteTab->deleteLater();
+        if(count()==0){
+            emit noTab();
+        }
 
     });
 }

@@ -43,15 +43,24 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //central widget
-    welcomePage = new WelComePage(this);
-    spaceTabWidget = new SpaceTabWidget(this);
+    centralStackWidget = new QStackedWidget;
+    centralStackWidget->setContentsMargins(0,0,0,0);
+    centralStackWidget->layout()->setContentsMargins(0,0,0,0);
+
+    setCentralWidget(centralStackWidget);
+    welcomePage = new WelComePage;
+    spaceTabWidget = new SpaceTabWidget;
     connect(spaceTabWidget,&SpaceTabWidget::currentChanged,this,[=](int index){
         //TODO
     });
 
+    connect(spaceTabWidget,&SpaceTabWidget::noTab,this,[=]{
+        centralStackWidget->setCurrentWidget(welcomePage);
+    });
 
-    setCentralWidget(welcomePage);
-
+    centralStackWidget->addWidget(welcomePage);
+    centralStackWidget->addWidget(spaceTabWidget);
+    centralStackWidget->setCurrentWidget(welcomePage);
 
 
 
@@ -178,7 +187,7 @@ void MainWindow::CreateActions()
     connect(newTab,&QAction::triggered,this,[=](){
         QString spaceName = QInputDialog::getText(this,tr("New Space Tab"),tr("Space Name"));
         if(!spaceName.isEmpty()){
-            setCentralWidget(spaceTabWidget);
+            centralStackWidget->setCurrentWidget(spaceTabWidget);
             spaceTabWidget->addSpaceTab(spaceName);
         }
     });

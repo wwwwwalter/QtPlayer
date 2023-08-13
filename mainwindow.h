@@ -34,6 +34,7 @@ public:
 
 private:
     //main widget
+    QStackedWidget *centralStackWidget;
     WelComePage *welcomePage;
     SpaceTabWidget *spaceTabWidget;
 

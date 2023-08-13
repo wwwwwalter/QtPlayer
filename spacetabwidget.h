@@ -21,7 +21,8 @@ public slots:
     void addSpaceTab(QString tabName);
 
 
-
+signals:
+    void noTab();
 
 
 };

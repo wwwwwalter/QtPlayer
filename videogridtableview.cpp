@@ -15,6 +15,11 @@ VideoGridTableView::VideoGridTableView(QWidget *parent)
     setGridStyle(Qt::DotLine);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    QPalette palette;
+    palette.setColor(QPalette::Highlight,QColor(38, 165, 38,255));
+    setPalette(palette);
+
+
 
     selectedColNum = 0;
     selectedRowNum = 0;
